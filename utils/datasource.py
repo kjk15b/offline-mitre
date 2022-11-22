@@ -3,7 +3,7 @@ import json
 
 def convert_from_mitre(data : dict, datasource : str):
     response = {
-        'technique' : datasource,
+        'datasource' : datasource,
         'name' : data['name'],
         'description' : data['description'],
         'type' : data['type'],

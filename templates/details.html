@@ -43,5 +43,59 @@
     <p>{{ dm }}</p>
     {% endfor %}
 </ol>
+{% elif type == 'datasource' %}
+<h1>{{ ds['datasource'] }}</h1>
+<h2>{{ ds['name'] }}</h2>
+<hr>
+<p>Type: {{ ds['type'] }}</p>
+<p>Created on: {{ ds['created'] }}</p>
+<p>Modified on: {{ ds['modified'] }}</p>
+<h3>Description</h3>
+<p>{{ ds['description'] }}</p>
+<hr>
+<h3>Sources</h3>
+<ul>
+{% for s in ds['source'] %}
+    <li>{{ s }}</li>
+{% endfor %}
+</ul>
+{% elif type == 'group' %}
+<h1>{{ group['group'] }}</h1>
+<h2>{{ group['name'] }}</h2>
+<hr>
+<p>Type: {{ group['type'] }}</p>
+<p>Created on: {{ group['created'] }}</p>
+<p>Modified on: {{ group['modified'] }}</p>
+<hr>
+<h3>Aliases</h3>
+<ul>
+{% for a in group['aliases'] %}
+    <li>{{ a }}</li>
+{% endfor %}
+</ul>
+<h3>Domains</h3>
+<ul>
+{% for d in group['domains'] %}
+    <li>{{ d }}</li>
+{% endfor %}
+</ul>
+{% elif type == 'software' %}
+<h1>{{ software['software'] }}</h1>
+<h2>{{ software['name'] }}</h2>
+<hr>
+<p>Type: {{ software['type'] }}</p>
+<p>Created on: {{ software['created'] }}</p>
+<p>Modified on: {{ software['modified'] }}</p>
+<hr>
+<h3>Description</h3>
+<p>{{ software['description'] }}</p>
+<h3>Aliases</h3>
+<p>{{ software['aliases'] }}</p>
+<h3>Domains</h3>
+<ul>
+{% for d in software['domains'] %}
+    <li>{{ d }}</li>
+{% endfor %}
+</ul>
 {% endif %}
 {% endblock %}

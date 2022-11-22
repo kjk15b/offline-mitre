@@ -55,11 +55,27 @@ def datasource_route(dsrc : str):
             f = open('static/enterprise/datasource/{}.json'.format(dsrc), 'r')
             data = json.load(f)
             response = datasource.convert_from_mitre(data, dsrc)
+            return render_template('details.html', type='datasource', ds=response)
+        except FileNotFoundError:
+            return "404"
+    else:
+        return "404 Could not be found: {}".format(dsrc)
+
+@app.route('/enterprise/datasources/<dsrc>')
+def datasource_api_route(dsrc : str):
+    dsrc = dsrc.upper()
+    print(dsrc)
+    if dsrc[0] == 'D' and dsrc[1] == 'S':
+        try:
+            f = open('static/enterprise/datasource/{}.json'.format(dsrc), 'r')
+            data = json.load(f)
+            response = datasource.convert_from_mitre(data, dsrc)
             return response
         except FileNotFoundError:
             return "404"
     else:
         return "404 Could not be found: {}".format(dsrc)
+
 
 @app.route('/enterprise/datasources')
 def datasources_route():
@@ -74,6 +90,21 @@ def datasources_api_route():
 
 @app.route('/enterprise/groups/<grp>')
 def group_route(grp : str):
+    grp = grp.upper()
+    print(grp)
+    if grp[0] == 'G':
+        try:
+            f = open('static/enterprise/groups/{}.json'.format(grp), 'r')
+            data = json.load(f)
+            response = group.convert_from_mitre(data, grp)
+            return render_template('details.html', type='group', group=response)
+        except FileNotFoundError:
+            return "404"
+    else:
+        return "404 Could not be found: {}".format(grp)
+
+@app.route('/enterprise/groups/<grp>')
+def group_api_route(grp : str):
     grp = grp.upper()
     print(grp)
     if grp[0] == 'G':
@@ -100,6 +131,22 @@ def groups_api_route():
 
 @app.route('/enterprise/software/<sw>')
 def software_route(sw : str):
+    sw = sw.upper()
+    print(sw)
+    if sw[0] == 'S':
+        try:
+            f = open('static/enterprise/software/{}.json'.format(sw), 'r')
+            data = json.load(f)
+            response = software.convert_from_mitre(data, sw)
+            return render_template('details.html', type='software', software=response)
+            return response
+        except FileNotFoundError:
+            return "404"
+    else:
+        return "404 Could not be found: {}".format(sw)
+
+@app.route('/api/enterprise/software/<sw>')
+def software_api_route(sw : str):
     sw = sw.upper()
     print(sw)
     if sw[0] == 'S':
