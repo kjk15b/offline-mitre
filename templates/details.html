@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+{% if type == 'technique' %}
+<h1>{{ ttp['technique'] }}</h1>
+<h2>{{ ttp['name'] }}</h2>
+<hr>
+<p>Type: {{ ttp['type'] }}</p>
+<p>Created on: {{ ttp['created'] }}</p>
+<p>Modified on: {{ ttp['modified'] }}</p>
+<p>Is Sub-technique: {{ ttp['is_subtechnique'] }}</p>
+<h3>Description</h3>
+<p>{{ ttp['description'] }}</p>
+<hr>
+<h3>Kill Chain</h3>
+<ol>
+    {% for kc in ttp['kill_chain'] %}
+        {% for key, value in kc.items() %}    
+        <p>{{ key }}: {{ value }}</p>
+        {% endfor %}
+    {% endfor %}
+</ol>
+<h3>Detection Methods</h3>
+<p>{{ ttp['detection'] }}</p>
+<h3>Data Sources</h3>
+{% if multiple_data_sources %}
+<ol>
+    {% for ds in ttp['data_sources'] %}
+    <p>{{ ds }}</p>
+    {% endfor %}
+</ol>
+{% else %}
+<p>{{ ttp['data_sources'] }}</p>
+{% endif %}
+<h3>Platforms</h3>
+<ol>
+    {% for p in ttp['platforms'] %}
+    <p>{{ p }}</p>
+    {% endfor %}
+</ol>
+<h3>Domains</h3>
+<ol>
+    {% for dm in ttp['domains'] %}
+    <p>{{ dm }}</p>
+    {% endfor %}
+</ol>
+{% endif %}
+{% endblock %}

@@ -2,6 +2,12 @@ import os
 import json
 
 def convert_from_mitre(data : dict, technique : str):
+    print(data)
+    data_sources = ''
+    if 'x_mitre_data_sources' in data.keys():
+        data_sources = data['x_mitre_data_sources']
+    else:
+        data_sources = 'None listed'
     response = {
         'technique' : technique,
         'name' : data['name'],
@@ -12,7 +18,7 @@ def convert_from_mitre(data : dict, technique : str):
         'kill_chain' : data['kill_chain_phases'],
         'detection' : data['x_mitre_detection'],
         'is_subtechnique' : data['x_mitre_is_subtechnique'],
-        'data_sources' : data['x_mitre_data_sources'],
+        'data_sources' : data_sources,
         'platforms' : data['x_mitre_platforms'],
         'domains' : data['x_mitre_domains']
     }

@@ -1,10 +1,5 @@
-<style>
-    tr:hover {background-color: #9dc766;}
-    td, th {text-align: center;}
-    table, td, th {border: 1px solid black;}
-    table {border-collapse: collapse;width: 100%;}
-    th {text-align: center;}
-</style>
+{% extends "base.html" %}
+{% block content %}
 {% if type == 'technique' %}
 <table>
     <thead>
@@ -109,3 +104,4 @@
     </tbody>
 </table>
 {% endif %}
+{% endblock %}

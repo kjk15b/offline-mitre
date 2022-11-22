@@ -11,6 +11,23 @@ def technique_route(ttp : str):
             f = open('static/enterprise/technique/{}.json'.format(ttp), 'r')
             data = json.load(f)
             response = technique.convert_from_mitre(data, ttp)
+            multiple_data_sources = False
+            if type(response['data_sources']) == list:
+                multiple_data_sources = True 
+            return render_template('details.html', type='technique', ttp=response, multiple_data_sources=multiple_data_sources)
+        except FileNotFoundError:
+            return "404"
+    else:
+        return "404 Could not be found: {}".format(ttp)
+
+@app.route('/api/enterprise/techniques/<ttp>')
+def technique_api_route(ttp : str):
+    ttp = ttp.upper()
+    if ttp[0] == 'T' and ttp[1] != 'A':
+        try:
+            f = open('static/enterprise/technique/{}.json'.format(ttp), 'r')
+            data = json.load(f)
+            response = technique.convert_from_mitre(data, ttp)
             return response
         except FileNotFoundError:
             return "404"
