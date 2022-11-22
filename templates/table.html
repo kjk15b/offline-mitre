@@ -1,0 +1,111 @@
+<style>
+    tr:hover {background-color: #9dc766;}
+    td, th {text-align: center;}
+    table, td, th {border: 1px solid black;}
+    table {border-collapse: collapse;width: 100%;}
+    th {text-align: center;}
+</style>
+{% if type == 'technique' %}
+<table>
+    <thead>
+        <tr>
+            <th>Technique</th>
+            <th>Name</th>
+            <th>Modified</th>
+            <th>Type</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for ttp in ttps %}
+        <tr>
+            <td><a href="/enterprise/techniques/{{ ttp['technique'] }}">{{ ttp['technique'] }}</a></td>
+            <td>{{ ttp['name'] }}</td>
+            <td>{{ ttp['modified'] }}</td>
+            <td>{{ ttp['type'] }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% elif type == 'datasource' %}
+<table>
+    <thead>
+        <tr>
+            <th>Datasource</th>
+            <th>Name</th>
+            <th>Modified</th>
+            <th>Type</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for ds in datasources %}
+        <tr>
+            <td><a href="/enterprise/datasources/{{ ds['datasource'] }}">{{ ds['datasource'] }}</a></td>
+            <td>{{ ds['name'] }}</td>
+            <td>{{ ds['modified'] }}</td>
+            <td>{{ ds['type'] }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% elif type == 'group' %}
+<table>
+    <thead>
+        <tr>
+            <th>Group</th>
+            <th>Name</th>
+            <th>Aliases</th>
+            <th>Modified</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for group in groups %}
+        <tr>
+            <td><a href="/enterprise/groups/{{ group['group'] }}">{{ group['group'] }}</a></td>
+            <td>{{ group['name'] }}</td>
+            <td>{{ group['aliases'] }}</td>
+            <td>{{ group['modified'] }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% elif type == 'software' %}
+<table>
+    <thead>
+        <tr>
+            <th>Software</th>
+            <th>Name</th>
+            <th>Labels</th>
+            <th>Modified</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for sw in softwares %}
+        <tr>
+            <td><a href="/enterprise/software/{{ sw['software'] }}">{{ sw['software'] }}</a></td>
+            <td>{{ sw['name'] }}</td>
+            <td>{{ sw['labels'] }}</td>
+            <td>{{ sw['modified'] }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% elif type == 'enterprise' %}
+<table>
+    <thead>
+        <tr>
+            <th>Field</th>
+            <th>Records</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for e in e_list %}
+        <tr>
+            <td><a href="/enterprise/{{ e['field'] }}">{{ e['field'] }}</a></td>
+            <td>{{ e['count'] }}</td>
+            <td>{{ e['description'] }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}
