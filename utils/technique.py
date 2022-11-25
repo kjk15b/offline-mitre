@@ -1,16 +1,29 @@
 import os
 import json
 
+def get_mapped_logs(component : str):
+    log_file = open('static/mappings/datalogs.json', 'r')
+    logs = json.load(log_file)
+    log_file.close()
+    if component in logs.keys():
+        print("Found mapping: {}, {}".format(component, logs[component]))
+        return logs[component]
+    else:
+        print("Could not find mapping: {}".format(component))
+        return "Not Mapped"
+
 def get_mapped_data_components(dc : list):
     print("Mappings Search: {}".format(dc))
     mapped_dc = {}
+    mapped_log = {}
     mappings_file = open('static/mappings/datacomponents.json', 'r')
     mappings = json.load(mappings_file)
     mappings_file.close()
     for component in dc:
         if component in mappings.keys():
             mapped_dc[component] = mappings[component]
-    return mapped_dc
+            mapped_log[component] = get_mapped_logs(component)
+    return mapped_dc, mapped_log
 
 def get_car_analytics(technique : str):
     analytics = {}
@@ -31,9 +44,10 @@ def convert_from_mitre(data : dict, technique : str):
     print(data)
     data_sources = ''
     mapped_dc = {}
+    mapped_log = {}
     if 'x_mitre_data_sources' in data.keys():
         data_sources = data['x_mitre_data_sources']
-        mapped_dc = get_mapped_data_components(data_sources)
+        mapped_dc, mapped_log = get_mapped_data_components(data_sources)
     else:
         data_sources = 'None listed'
         mapped_dc['dc_found'] = False
@@ -51,7 +65,8 @@ def convert_from_mitre(data : dict, technique : str):
         'platforms' : data['x_mitre_platforms'],
         'domains' : data['x_mitre_domains'],
         'analytics' : get_car_analytics(technique),
-        'mapped_dc' : mapped_dc
+        'mapped_dc' : mapped_dc,
+        'mapped_log' : mapped_log
     }
     return response
 

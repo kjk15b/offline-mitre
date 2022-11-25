@@ -58,6 +58,7 @@
     "Malware Repository: Malware Metadata" : "Malware_Metadata",
     "Module: Module Load" : "Module_Load",
     "Named Pipe: Named Pipe Metadata" : "Named Pipe Metadata",
+    "Network Traffic: Network Traffic Content" : "Network_Traffic_Content",
     "Network Traffic: Network Connection Creation" : "Network_Connection_Creation",
     "Network Traffic: Network Content Creation" : "Network_Traffic_Content",
     "Network Traffic: Network Traffic Flow" : "Network_Traffic_Flow",

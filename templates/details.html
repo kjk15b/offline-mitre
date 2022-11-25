@@ -26,6 +26,10 @@
 <ol>
     {% for ds in ttp['data_sources'] %}
     <p><a href="/enterprise/data-component/{{ttp['mapped_dc'][ds]}}">{{ ds }}</a></p>
+    {% if ttp['mapped_log'][ds] != 'Not Mapped' %}
+    <ul><li><p>Logs: {{ ttp['mapped_log'][ds]}}</p></li></ul>
+    {% endif %}
+    <p></p>
     {% endfor %}
 </ol>
 {% else %}
