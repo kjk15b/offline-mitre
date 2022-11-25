@@ -12,20 +12,6 @@ def get_mapped_data_components(dc : list):
             mapped_dc[component] = mappings[component]
     return mapped_dc
 
-def get_car_analytics(technique : str):
-    analytics = {}
-    try:
-        f = open('static/car/{}.json'.format(technique), 'r')
-        data = json.load(f)
-        analytics = data
-        analytics['analytics_found'] = True
-    except FileNotFoundError:
-        analytics = {
-            "analytics_found" : False
-        }
-    print(20*"*")
-    print(analytics)
-    return analytics
 
 def convert_from_mitre(data : dict):
     print(data)
