@@ -25,7 +25,7 @@
 {% if multiple_data_sources %}
 <ol>
     {% for ds in ttp['data_sources'] %}
-    <p>{{ ds }}</p>
+    <p><a href="/enterprise/data-component/{{ttp['mapped_dc'][ds]}}">{{ ds }}</a></p>
     {% endfor %}
 </ol>
 {% else %}
@@ -43,6 +43,24 @@
     <p>{{ dm }}</p>
     {% endfor %}
 </ol>
+{% if ttp['analytics']['analytics_found'] %}
+<hr>
+<h3>Analytics: </h3>
+<hr>
+{% for analytic in ttp['analytics']['analytics'] %}
+<h4>{{ analytic['name'] }}</h4>
+<h5>Description</h5>
+<p>{{ analytic['description'] }}</p>
+<hr>
+<p>Psuedocode implementation type: {{ analytic['implementation'] }}</p>
+<h5>Psuedocode</h5>
+{% for line in analytic['psuedocode'] %}
+<p>{{ line }}</p>
+{% endfor %}
+<hr>
+{% endfor %}
+{% endif %}
+
 {% elif type == 'datasource' %}
 <h1>{{ ds['datasource'] }}</h1>
 <h2>{{ ds['name'] }}</h2>
@@ -59,6 +77,7 @@
     <li>{{ s }}</li>
 {% endfor %}
 </ul>
+
 {% elif type == 'group' %}
 <h1>{{ group['group'] }}</h1>
 <h2>{{ group['name'] }}</h2>
@@ -79,6 +98,7 @@
     <li>{{ d }}</li>
 {% endfor %}
 </ul>
+
 {% elif type == 'software' %}
 <h1>{{ software['software'] }}</h1>
 <h2>{{ software['name'] }}</h2>
@@ -97,5 +117,16 @@
     <li>{{ d }}</li>
 {% endfor %}
 </ul>
+
+{% elif type == 'datacomponent' %}
+<h1>{{ dc['name'] }}</h1>
+<hr>
+<p>Type: {{ dc['type'] }}</p>
+<p>Created on: {{ dc['created'] }}</p>
+<p>Modified on: {{ dc['modified'] }}</p>
+<hr>
+<h3>Description</h3>
+<p>{{ dc['description'] }}</p>
+
 {% endif %}
 {% endblock %}

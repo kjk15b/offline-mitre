@@ -1,5 +1,5 @@
 from flask import Flask, Response, json, render_template
-from utils import technique, datasource, group, software
+from utils import technique, datasource, group, software, datacomponent
 
 app = Flask(__name__)
 
@@ -139,7 +139,6 @@ def software_route(sw : str):
             data = json.load(f)
             response = software.convert_from_mitre(data, sw)
             return render_template('details.html', type='software', software=response)
-            return response
         except FileNotFoundError:
             return "404"
     else:
@@ -170,6 +169,37 @@ def softwares_api_route():
     softwares = software.get_all_groups()
     return softwares
 
+@app.route('/enterprise/data-component/<dc>')
+def datacomponent_route(dc : str):
+    try:
+        f = open('static/enterprise/data-component/{}.json'.format(dc), 'r')
+        data = json.load(f)
+        print(data)
+        response = datacomponent.convert_from_mitre(data)
+        return render_template('details.html', type='datacomponent', dc=response)
+    except FileNotFoundError:
+        return "404"
+    
+@app.route('/api/enterprise/data-component/<dc>')
+def datacomponent_api_route(dc : str):
+    try:
+            f = open('static/enterprise/data-component/{}.json'.format(dc), 'r')
+            data = json.load(f)
+            response = datacomponent.convert_from_mitre(data)
+            return response
+    except FileNotFoundError:
+            return "404"
+
+@app.route('/enterprise/data-component')
+def datacomponents_route():
+    dcs = datacomponent.get_all_data_components()
+    return render_template('table.html', type='datacomponent', dcs=dcs)
+
+@app.route('/api/enterprise/software')
+def datacomponents_api_route():
+    dcs = datacomponent.get_all_data_components()
+    return dcs
+
 
 @app.route('/enterprise')
 @app.route('/')
@@ -194,6 +224,11 @@ def enterprise_route():
             'field' : 'software',
             'count' : software.get_count(),
             'description' : 'Software and Malware lists used by TTPs'
+        },
+        {
+            'field' : 'data-component',
+            'count' : datacomponent.get_count(),
+            'description' : 'Data-Components of adversarial behavior'
         }
     ]
     return render_template('table.html', type='enterprise', e_list=e_list)

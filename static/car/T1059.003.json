@@ -1,0 +1,17 @@
+{
+    "technique" : "T1059.003",
+    "analytics" : [
+        {
+            "name" : "CAR-2013-02-003: Process Spawning cmd.exe",
+            "description" : "The Windows Command Prompt (cmd.exe) is a utility that provides a command line interface to Windows operating systems. It provides the ability to run additional programs and also has several built-in commands such as dir, copy, mkdir, and type, as well as batch scripts (.bat). Typically, when a user runs a command prompt, the parent process is explorer.exe or another instance of the prompt. There may be automated programs, logon scripts, or administrative tools that launch instances of the command prompt in order to run scripts or other built-in commands. Spawning the process cmd.exe from certain parents may be more indicative of malice. For example, if Adobe Reader or Outlook launches a command shell, this may suggest that a malicious document has been loaded and should be investigated. Thus, by looking for abnormal parent processes of cmd.exe, it may be possible to detect adversaries.",
+            "implementation" : "General",
+            "psuedocode" : ["process = search Process:Create", "cmd = filter process where (exe == \"cmd.exe\")","output cmd"]
+        },
+        {
+            "name" : "CAR-2014-11-002: Outlier Parents of cmd.exe",
+            "description" : "Many programs create command prompts as part of their normal operation including malware used by attackers. This analytic attempts to identify suspicious programs spawning cmd.exe by looking for programs that do not normally create cmd.exe. While this analytic does not take the user into account, doing so could generate further interesting results. It is very common for some programs to spawn cmd.exe as a subprocess, for example to run batch files or windows commands. However many process don’t routinely launch a command prompt – for example Microsoft Outlook. A command prompt being launched from a process that normally doesn’t launch command prompts could be the result of malicious code being injected into that process, or of an attacker replacing a legitimate program with a malicious one.",
+            "implementation" : "Splunk",
+            "psuedocode" : ["processes = search Process:Create", "cmd = filter processes where (exe == \"cmd.exe\")", "cmd = from cmd select parent_exe", "historic_cmd = filter cmd (where timestamp < now - 1 day AND timestamp > now - 1 day)", "current_cmd = filter cmd (where timestamp >= now - 1 day)", "new_cmd = historic_cmd - current_cmd", "output new_cmd"]
+        }
+    ]
+}

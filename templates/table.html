@@ -21,6 +21,7 @@
         {% endfor %}
     </tbody>
 </table>
+
 {% elif type == 'datasource' %}
 <table>
     <thead>
@@ -42,6 +43,7 @@
         {% endfor %}
     </tbody>
 </table>
+
 {% elif type == 'group' %}
 <table>
     <thead>
@@ -63,6 +65,7 @@
         {% endfor %}
     </tbody>
 </table>
+
 {% elif type == 'software' %}
 <table>
     <thead>
@@ -84,6 +87,27 @@
         {% endfor %}
     </tbody>
 </table>
+
+{% elif type == 'datacomponent' %}
+<table>
+    <thead>
+        <tr>
+            <th>Component</th>
+            <th>Created</th>
+            <th>Modified</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for dc in dcs %}
+        <tr>
+            <td><a href="/enterprise/data-component/{{ dc['ref'] }}">{{ dc['name'] }}</a></td>
+            <td>{{ dc['created'] }}</td>
+            <td>{{ dc['modified'] }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
 {% elif type == 'enterprise' %}
 <table>
     <thead>
@@ -103,5 +127,6 @@
         {% endfor %}
     </tbody>
 </table>
+
 {% endif %}
 {% endblock %}

@@ -1,0 +1,11 @@
+{
+    "technique" : "T1059",
+    "analytics" : [
+        {
+            "name" : "CAR-2021-01-002: Unusually Long Command Line Strings",
+            "description" : "Often, after a threat actor gains access to a system, they will attempt to run some kind of malware to further infect the victim machine. These malware often have long command line strings, which could be a possible indicator of attack. Here, we use sysmon and Splunk to first find the average command string length and search for command strings that stretch over multiple lines, thus identifying anomalies and possibly malicious commands.",
+            "implementation" : "Splunk",
+            "psuedocode" : ["index=* sourcetype=\"xmlwineventlog\" EventCode=4688  |eval cmd_len=len(CommandLine) | eventstats avg(cmd_len) as avg by host| stats max(cmd_len) as maxlen, values(avg) as avgperhost by host, CommandLine | where maxlen > 10*avgperhost"]
+        }
+    ]
+}

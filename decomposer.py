@@ -26,5 +26,11 @@ for object in data['objects']:
                 if found_tag:
                     enterprise_object.write(json.dumps(object, indent=3))
                     enterprise_object.close()
+    elif object['type'] == 'x-mitre-data-component': 
+        data_component_name = object['name'].replace(" ", "_")
+        data_component = open('static/enterprise/data-component/{}.json'.format(data_component_name), 'w')
+        #object['data_component_name'] = data_component_name
+        data_component.write(json.dumps(object, indent=3))
+        data_component.close()
 
 f.close()
