@@ -14,7 +14,8 @@ def technique_route(ttp : str):
             multiple_data_sources = False
             if type(response['data_sources']) == list:
                 multiple_data_sources = True 
-            return render_template('details.html', type='technique', ttp=response, multiple_data_sources=multiple_data_sources)
+            no_ext_ref = len(response['external_ref'])
+            return render_template('details.html', type='technique', ttp=response, multiple_data_sources=multiple_data_sources, no_ext_ref=no_ext_ref)
         except FileNotFoundError:
             return "404"
     else:

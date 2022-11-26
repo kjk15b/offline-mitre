@@ -1,5 +1,37 @@
 import os
 import json
+import configparser
+import requests
+
+def get_ear_exes():
+    exes = {}
+    config = configparser.ConfigParser()
+    config.read('config.ini')
+    try: 
+        response = requests.get('http://{}:{}/api/insights'.format(config['DEFAULT']['earhost'], config['DEFAULT']['earport']))
+        content = response.content.decode('utf-8')
+        data = json.loads(content)
+        exes['exes'] = data
+        exes['host'] = 'connected'
+        print(exes)
+        return exes
+    except TimeoutError:
+        print("Could not reach EAR host...")
+        return { 'host' : 'unreachable'}
+
+def search_for_intel(desc : str):
+    exes = get_ear_exes()
+    external_links = []
+    config = configparser.ConfigParser()
+    config.read('config.ini')
+    url = 'http://{}:{}/insights/search/'.format(config['DEFAULT']['earhost'], config['DEFAULT']['earport'])
+    if exes['host'] == 'connected':
+        for exe in exes['exes']:
+            if exe['name'] in desc:
+                external_links.append({exe['name'] : url+exe['name']})
+    print(external_links)
+    return external_links
+
 
 def get_mapped_logs(component : str):
     log_file = open('static/mappings/datalogs.json', 'r')
@@ -66,7 +98,8 @@ def convert_from_mitre(data : dict, technique : str):
         'domains' : data['x_mitre_domains'],
         'analytics' : get_car_analytics(technique),
         'mapped_dc' : mapped_dc,
-        'mapped_log' : mapped_log
+        'mapped_log' : mapped_log,
+        'external_ref' : search_for_intel(data['description'])
     }
     return response
 

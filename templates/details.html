@@ -64,6 +64,15 @@
 <hr>
 {% endfor %}
 {% endif %}
+{% if no_ext_ref > 0 %}
+<h3>External Intel</h3>
+{% for ref in ttp['external_ref'] %}
+{% for key, value in ref.items() %}
+<p><a href="{{ value }}">{{ key }}</a></p>
+{% endfor %}
+{% endfor %}
+{% endif %}
+
 
 {% elif type == 'datasource' %}
 <h1>{{ ds['datasource'] }}</h1>
