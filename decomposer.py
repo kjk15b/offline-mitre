@@ -23,6 +23,9 @@ for object in data['objects']:
                 elif ref['external_id'][0] == 'G':
                     enterprise_object = open('static/enterprise/groups/{}.json'.format(ref['external_id']), 'w')
                     found_tag = True
+                elif ref['external_id'][0] == 'T' and ref['external_id'][1] == 'A':
+                    enterprise_object = open('static/enterprise/tactics/{}.json'.format(ref['external_id']), 'w')
+                    found_tag = True
                 if found_tag:
                     enterprise_object.write(json.dumps(object, indent=3))
                     enterprise_object.close()

@@ -1,5 +1,5 @@
 from flask import Flask, Response, json, render_template
-from utils import technique, datasource, group, software, datacomponent, analytic
+from utils import technique, datasource, group, software, datacomponent, analytic, tactic
 
 app = Flask(__name__)
 
@@ -254,6 +254,38 @@ def car_analytics_api_route():
     analytics = analytic.get_all_analytics()
     return analytics
 
+@app.route('/enterprise/tactics/<t>')
+def tactic_route(t : str):
+    try:
+        f = open('static/enterprise/tactics/{}.json'.format(t), 'r')
+        data = json.load(f)
+        print(data)
+        response = tactic.convert_from_mitre(data, t)
+        return render_template('details.html', type='tactic', t=response)
+    except FileNotFoundError:
+        return "404"
+    
+@app.route('/api/enterprise/tactics/<t>')
+def tactic_api_route(t : str):
+    try:
+            f = open('static/enterprise/tactics/{}.json'.format(t), 'r')
+            data = json.load(f)
+            response = tactic.convert_from_mitre(data)
+            return response
+    except FileNotFoundError:
+            return "404"
+
+@app.route('/enterprise/tactics')
+def tactics_route():
+    tactics = tactic.get_all_tactics()
+    return render_template('table.html', type='tactic', tactics=tactics)
+
+@app.route('/api/enterprise/tactics')
+def tactics_api_route():
+    tactics = tactic.get_all_tactics()
+    return tactics
+
+
 @app.route('/enterprise')
 @app.route('/')
 def enterprise_route():
@@ -277,6 +309,11 @@ def enterprise_route():
             'field' : 'software',
             'count' : software.get_count(),
             'description' : 'Software and Malware lists used by TTPs'
+        },
+        {
+            'field' : 'tactics',
+            'count' : tactic.get_count(),
+            'description' : 'Common tactics used by APTs'
         },
         {
             'field' : 'data-component',

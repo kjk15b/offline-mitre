@@ -136,6 +136,26 @@
     </tbody>
 </table>
 
+{% elif type == 'tactic' %}
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Modified</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for t in tactics %}
+        <tr>
+            <td><a href="/enterprise/tactics/{{ t['tactic'] }}">{{ t['tactic'] }}</a></td>
+            <td>{{ t['name'] }}</td>
+            <td>{{ t['modified'] }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
 {% elif type == 'enterprise' %}
 <table>
     <thead>

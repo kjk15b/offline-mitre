@@ -277,13 +277,29 @@
 {% for impl in analytic['implementations'] %}
 <ol>
 {% for key, value in impl.items() %}
-<li>{{ key }}: {{ value }}</li>
+<li>{{ key }}: <ul><li>{{ value }}</li></ul></li>
+<br>
 {% endfor %}
 </ol>
 <br>
 {% endfor %}
 <hr>
 {% endif %}
+
+{% elif type == 'tactic' %}
+<h1>{{ t['tactic'] }}</h1>
+<h3>{{ t['name'] }}</h3>
+<p>Created on: {{ t['created'] }}</p>
+<p>Modified on: {{ t['modified'] }}</p>
+<h3>Domains</h3>
+<ul>
+    {% for d in t['domains'] %}
+    <li>{{ d }}</li>
+    {% endfor %}
+</ul>
+<hr>
+<h3>Description</h3>
+<p>{{ t['description'] }}</p>
 
 {% endif %}
 {% endblock %}
