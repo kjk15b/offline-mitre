@@ -17,7 +17,7 @@ def technique_route(ttp : str):
             no_ext_ref = len(response['external_ref'])
             return render_template('details.html', type='technique', ttp=response, multiple_data_sources=multiple_data_sources, no_ext_ref=no_ext_ref)
         except FileNotFoundError:
-            return "404"
+            return render_template('404.html', content="Could not find: {}".format(ttp), type="technique")
     else:
         return "404 Could not be found: {}".format(ttp)
 
@@ -58,11 +58,11 @@ def datasource_route(dsrc : str):
             response = datasource.convert_from_mitre(data, dsrc)
             return render_template('details.html', type='datasource', ds=response)
         except FileNotFoundError:
-            return "404"
+            return render_template('404.html', content="Could not find: {}".format(dsrc), type="Datasource")
     else:
         return "404 Could not be found: {}".format(dsrc)
 
-@app.route('/enterprise/datasources/<dsrc>')
+@app.route('/api/enterprise/datasources/<dsrc>')
 def datasource_api_route(dsrc : str):
     dsrc = dsrc.upper()
     print(dsrc)
@@ -100,11 +100,11 @@ def group_route(grp : str):
             response = group.convert_from_mitre(data, grp)
             return render_template('details.html', type='group', group=response)
         except FileNotFoundError:
-            return "404"
+            return render_template('404.html', content="Could not find: {}".format(grp), type="group")
     else:
         return "404 Could not be found: {}".format(grp)
 
-@app.route('/enterprise/groups/<grp>')
+@app.route('/api/enterprise/groups/<grp>')
 def group_api_route(grp : str):
     grp = grp.upper()
     print(grp)
@@ -141,7 +141,7 @@ def software_route(sw : str):
             response = software.convert_from_mitre(data, sw)
             return render_template('details.html', type='software', software=response)
         except FileNotFoundError:
-            return "404"
+            return render_template('404.html', content="Could not find: {}".format(sw), type="software")
     else:
         return "404 Could not be found: {}".format(sw)
 
@@ -179,7 +179,7 @@ def datacomponent_route(dc : str):
         response = datacomponent.convert_from_mitre(data)
         return render_template('details.html', type='datacomponent', dc=response)
     except FileNotFoundError:
-        return "404"
+        return render_template('404.html', content="Could not find: {}".format(dc), type="Data-Component")
     
 @app.route('/api/enterprise/data-component/<dc>')
 def datacomponent_api_route(dc : str):
@@ -230,7 +230,7 @@ def car_analytic_route(a : str):
             have_contrib=have_contrib, have_coverage=have_coverage, have_impl=have_impl, have_data_model=have_data_model,
             have_d3=have_d3, have_unit_tests=have_unit_tests, have_platform=have_platform)
     except FileNotFoundError:
-            return "404"
+            return render_template('404.html', content="Could not find: {}".format(a), type="car-analytic")
 
 @app.route('/api/car/<a>')
 def car_analytic_api_route(a : str):
@@ -263,7 +263,7 @@ def tactic_route(t : str):
         response = tactic.convert_from_mitre(data, t)
         return render_template('details.html', type='tactic', t=response)
     except FileNotFoundError:
-        return "404"
+        return render_template('404.html', content="Could not find: {}".format(t), type="tactics")
     
 @app.route('/api/enterprise/tactics/<t>')
 def tactic_api_route(t : str):
