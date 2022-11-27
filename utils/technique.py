@@ -15,7 +15,7 @@ def get_ear_exes():
         exes['host'] = 'connected'
         print(exes)
         return exes
-    except TimeoutError:
+    except requests.exceptions.ConnectionError:
         print("Could not reach EAR host...")
         return { 'host' : 'unreachable'}
 
@@ -58,19 +58,18 @@ def get_mapped_data_components(dc : list):
     return mapped_dc, mapped_log
 
 def get_car_analytics(technique : str):
-    analytics = {}
-    try:
-        f = open('static/car/{}.json'.format(technique), 'r')
-        data = json.load(f)
-        analytics = data
-        analytics['analytics_found'] = True
-    except FileNotFoundError:
-        analytics = {
-            "analytics_found" : False
-        }
-    print(20*"*")
-    print(analytics)
-    return analytics
+    mappings_file = open('static/mappings/mappings-tech2analytic.json', 'r')
+    mappings = json.load(mappings_file)
+    mappings_file.close()
+    if technique in mappings.keys():
+        analytic_file = open('static/car/{}.json'.format(mappings[technique]), 'r')
+        analytic = json.load(analytic_file)
+        analytic_file.close()
+        print(analytic)
+        analytic['analytics_found'] = True
+        return analytic
+    else:
+        return "None"
 
 def convert_from_mitre(data : dict, technique : str):
     print(data)

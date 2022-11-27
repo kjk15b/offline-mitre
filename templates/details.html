@@ -51,19 +51,9 @@
 <hr>
 <h3>Analytics: </h3>
 <hr>
-{% for analytic in ttp['analytics']['analytics'] %}
-<h4>{{ analytic['name'] }}</h4>
-<h5>Description</h5>
-<p>{{ analytic['description'] }}</p>
-<hr>
-<p>Psuedocode implementation type: {{ analytic['implementation'] }}</p>
-<h5>Psuedocode</h5>
-{% for line in analytic['psuedocode'] %}
-<p>{{ line }}</p>
-{% endfor %}
-<hr>
-{% endfor %}
+<h4><a href="/car/{{ ttp['analytics']['id'] }}">{{ ttp['analytics']['title'] }}</a></h4>
 {% endif %}
+
 {% if no_ext_ref > 0 %}
 <h3>External Intel</h3>
 {% for ref in ttp['external_ref'] %}
@@ -140,6 +130,160 @@
 <hr>
 <h3>Description</h3>
 <p>{{ dc['description'] }}</p>
+
+{% elif type == 'car-analytic' %}
+<h1>{{ analytic['id'] }}: {{ analytic['title'] }}</h1>
+<h3>Description</h3>
+<p>{{ analytic['description'] }}</p>
+<hr>
+{% if have_platforms %}
+<h3>Platforms</h3>
+<ul>
+    {% for p in analytic['platforms'] %}
+    <li><p>{{ p }}</p></li>
+    {% endfor %}
+</ul>
+{% endif %}
+<h3>Subtypes</h3>
+<ul>
+    {% for s in analytic['subtypes'] %}
+    <li><p>{{ s }}</p></li>
+    {% endfor %}
+</ul>
+{% if have_contrib %}
+<h3>Contributors</h3>
+<ul>
+    {% for c in analytic['contributors'] %}
+    <li><p>{{ c }}</p></li>
+    {% endfor %}
+</ul>
+<hr>
+{% endif %}
+{% if have_contrib %}
+<h3>Contributors</h3>
+<ul>
+    {% for c in analytic['contributors'] %}
+    <li><p>{{ c }}</p></li>
+    {% endfor %}
+</ul>
+<hr>
+{% endif %}
+{% if have_coverage %}
+<h3>Coverage</h3>
+<table>
+    <thead>
+        <tr>
+            <th>Technique</th>
+            <th>Tactics</th>
+            <th>Subtechniques</th>
+            <th>Coverage</th>
+        </tr>
+    </thead>
+    <body>
+        {% for c in analytic['coverage'] %}
+        <tr>
+            <td><a href="/enterprise/techniques/{{ c['technique'] }}">{{ c['technique'] }}</a></td>
+            <td>
+                <ul>
+                {% for tactic in c['tactics'] %}
+                <li>{{ tactic }}</li>
+                {% endfor %}
+                </ul>
+            </td>
+            <td>
+                <ul>
+                {% for t in c['subtechniques'] %}
+                <li><a href="/enterprise/techniques/{{ t }}">{{ t }}</a></li>
+                {% endfor %}
+                </ul>
+            </td>
+            <td>{{ c['coverage'] }}</td>
+        </tr>
+        {% endfor %}
+    </body>
+</table>
+<hr>
+{% endif %}
+{% if have_data_model %}
+<h3>Data Models</h3>
+<ol>
+{% for dm in analytic['data_model_references'] %}
+<li>{{ dm }}</li>
+{% endfor %}
+</ol>
+<hr>
+{% endif %}
+
+{% if have_d3 %}
+<h3>D3FEND Mappings</h3>
+<table>
+    <thead>
+        <tr>
+            <th>IRI</th>
+            <th>ID</th>
+            <th>Label</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for d3 in analytic['d3fend_mappings'] %}
+        <tr>
+            <td>{{ d3['iri'] }}</td>
+            <td>{{ d3['id'] }}</td>
+            <td>{{ d3['label'] }}</td>    
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<hr>
+{% endif %}
+
+{% if have_unit_tests %}
+<h3>Unit Tests</h3>
+<table>
+    <thead>
+        <tr>
+            <th>Configurations</th>
+            <th>Description</th>
+            <th>Commands</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for ut in analytic['unit_tests'] %}
+        <tr>
+            <td>
+                <ul>
+                    {% for config in ut['configurations'] %}
+                    <li>{{ config }}</li>
+                    {% endfor %}
+                </ul>
+            </td>
+            <td>{{ ut['description'] }}</td>
+            <td>
+                <ol>
+                    {% for cmd in ut['commands'] %}
+                    <li>{{ cmd }}</li>
+                    {% endfor %}
+                </ol>
+            </td>    
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<hr>
+{% endif %}
+
+{% if have_impl %}
+<h3>Implementation</h3>
+{% for impl in analytic['implementations'] %}
+<ol>
+{% for key, value in impl.items() %}
+<li>{{ key }}: {{ value }}</li>
+{% endfor %}
+</ol>
+<br>
+{% endfor %}
+<hr>
+{% endif %}
 
 {% endif %}
 {% endblock %}

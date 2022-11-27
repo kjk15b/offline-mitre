@@ -1,5 +1,5 @@
 from flask import Flask, Response, json, render_template
-from utils import technique, datasource, group, software, datacomponent
+from utils import technique, datasource, group, software, datacomponent, analytic
 
 app = Flask(__name__)
 
@@ -196,11 +196,63 @@ def datacomponents_route():
     dcs = datacomponent.get_all_data_components()
     return render_template('table.html', type='datacomponent', dcs=dcs)
 
-@app.route('/api/enterprise/software')
+@app.route('/api/enterprise/data-component')
 def datacomponents_api_route():
     dcs = datacomponent.get_all_data_components()
     return dcs
 
+
+@app.route('/car/<a>')
+def car_analytic_route(a : str):
+    a = a.upper()
+    print(a)
+    try:
+        f = open('static/car/{}.json'.format(a), 'r')
+        data = json.load(f)
+        response = analytic.convert_from_mitre(data)
+        have_contrib, have_coverage, have_impl, have_data_model, have_unit_tests, have_d3, have_platform = False, False, False, False, False, False, False
+        if len(response['contributors']) > 0:
+            have_contrib = True
+        if len(response['coverage']) > 0:
+            have_coverage = True
+        if len(response['implementations']) > 0:
+            have_impl = True
+        if len(response['data_model_references']) > 0:
+            have_data_model = True
+        if len(response['unit_tests']) > 0:
+            have_unit_tests = True
+            print(have_unit_tests)
+        if len(response['d3fend_mappings']) > 0:
+            have_d3 = True
+        if len(response['platforms']) > 0:
+            have_platform = True
+        return render_template('details.html', type='car-analytic', analytic=response,
+            have_contrib=have_contrib, have_coverage=have_coverage, have_impl=have_impl, have_data_model=have_data_model,
+            have_d3=have_d3, have_unit_tests=have_unit_tests, have_platform=have_platform)
+    except FileNotFoundError:
+            return "404"
+
+@app.route('/api/car/<a>')
+def car_analytic_api_route(a : str):
+    a = a.upper()
+    print(a)
+    try:
+        f = open('static/car/{}.json'.format(a), 'r')
+        data = json.load(f)
+        response = analytic.convert_from_mitre(data)
+        return render_template('details.html', type='car-analytic', analytic=response)
+    except FileNotFoundError:
+            return "404"
+
+@app.route('/car')
+def car_analytics_route():
+    analytics = analytic.get_all_analytics()
+    return render_template('table.html', type='car-analytic', analytics=analytics)
+
+@app.route('/api/car')
+def car_analytics_api_route():
+    analytics = analytic.get_all_analytics()
+    return analytics
 
 @app.route('/enterprise')
 @app.route('/')
@@ -230,6 +282,11 @@ def enterprise_route():
             'field' : 'data-component',
             'count' : datacomponent.get_count(),
             'description' : 'Data-Components of adversarial behavior'
+        },
+        {
+            'field' : 'car',
+            'count' : analytic.get_count(),
+            'description' : 'MITRE analytics mapped to techniques'
         }
     ]
     return render_template('table.html', type='enterprise', e_list=e_list)

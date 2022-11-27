@@ -108,6 +108,34 @@
     </tbody>
 </table>
 
+{% elif type == 'car-analytic' %}
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Analytic Types</th>
+            <th>Submission Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for a in analytics %}
+        <tr>
+            <td><a href="/car/{{ a['id'] }}">{{ a['id'] }}</a></td>
+            <td>{{ a['title'] }}</td>
+            <td>
+                <ul>
+                    {% for atype in a['analytic_types'] %}
+                    <li>{{ atype }}</li>
+                    {% endfor %}
+                </ul>
+            </td>
+            <td>{{ a['submission_date'] }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
 {% elif type == 'enterprise' %}
 <table>
     <thead>
@@ -120,7 +148,11 @@
     <tbody>
         {% for e in e_list %}
         <tr>
+            {% if e['field'] == 'car' %}
+            <td><a href="/{{ e['field'] }}">{{ e['field'] }}</a></td>
+            {% else %}
             <td><a href="/enterprise/{{ e['field'] }}">{{ e['field'] }}</a></td>
+            {% endif %}
             <td>{{ e['count'] }}</td>
             <td>{{ e['description'] }}</td>
         </tr>
