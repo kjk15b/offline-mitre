@@ -121,7 +121,8 @@ def get_all_techniques():
                 'technique' : technique,
                 'name' : data['name'],
                 'type' : data['type'],
-                'modified' : data['modified']
+                'modified' : data['modified'],
+                'description' : data['description']
             }
         )
     print(ttp_list)

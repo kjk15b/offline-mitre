@@ -1,7 +1,28 @@
 {% extends "base.html" %}
 {% block content %}
+<head>
+    <style>
+        #pagination-demo li {  display: inline-block;  }  
+    </style>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">  
+<script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $("#search_mitre").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#tbody tr").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+    </script>
+</head>
+<div class="page">
+<p>Search and filter results below:</p>  
+<input id="search_mitre" type="text" placeholder="powershell">
+<br><br>
 {% if type == 'technique' %}
-<table>
+<table class="technique">
     <thead>
         <tr>
             <th>Technique</th>
@@ -10,20 +31,21 @@
             <th>Type</th>
         </tr>
     </thead>
-    <tbody>
+    <tbody id="tbody">
         {% for ttp in ttps %}
         <tr>
             <td><a href="/enterprise/techniques/{{ ttp['technique'] }}">{{ ttp['technique'] }}</a></td>
             <td>{{ ttp['name'] }}</td>
             <td>{{ ttp['modified'] }}</td>
             <td>{{ ttp['type'] }}</td>
+            <td hidden="hidden">{{ ttp['description'] }}</td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
 
 {% elif type == 'datasource' %}
-<table>
+<table class="datasource">
     <thead>
         <tr>
             <th>Datasource</th>
@@ -32,7 +54,7 @@
             <th>Type</th>
         </tr>
     </thead>
-    <tbody>
+    <tbody id="tbody">
         {% for ds in datasources %}
         <tr>
             <td><a href="/enterprise/datasources/{{ ds['datasource'] }}">{{ ds['datasource'] }}</a></td>
@@ -45,7 +67,7 @@
 </table>
 
 {% elif type == 'group' %}
-<table>
+<table class="groups">
     <thead>
         <tr>
             <th>Group</th>
@@ -54,7 +76,7 @@
             <th>Modified</th>
         </tr>
     </thead>
-    <tbody>
+    <tbody id="tbody">
         {% for group in groups %}
         <tr>
             <td><a href="/enterprise/groups/{{ group['group'] }}">{{ group['group'] }}</a></td>
@@ -67,7 +89,7 @@
 </table>
 
 {% elif type == 'software' %}
-<table>
+<table class="software">
     <thead>
         <tr>
             <th>Software</th>
@@ -76,7 +98,7 @@
             <th>Modified</th>
         </tr>
     </thead>
-    <tbody>
+    <tbody id="tbody">
         {% for sw in softwares %}
         <tr>
             <td><a href="/enterprise/software/{{ sw['software'] }}">{{ sw['software'] }}</a></td>
@@ -89,7 +111,7 @@
 </table>
 
 {% elif type == 'datacomponent' %}
-<table>
+<table class="datacomponent">
     <thead>
         <tr>
             <th>Component</th>
@@ -97,7 +119,7 @@
             <th>Modified</th>
         </tr>
     </thead>
-    <tbody>
+    <tbody id="tbody">
         {% for dc in dcs %}
         <tr>
             <td><a href="/enterprise/data-component/{{ dc['ref'] }}">{{ dc['name'] }}</a></td>
@@ -109,7 +131,7 @@
 </table>
 
 {% elif type == 'car-analytic' %}
-<table>
+<table class="car">
     <thead>
         <tr>
             <th>ID</th>
@@ -118,7 +140,7 @@
             <th>Submission Date</th>
         </tr>
     </thead>
-    <tbody>
+    <tbody id="tbody">
         {% for a in analytics %}
         <tr>
             <td><a href="/car/{{ a['id'] }}">{{ a['id'] }}</a></td>
@@ -137,7 +159,7 @@
 </table>
 
 {% elif type == 'tactic' %}
-<table>
+<table class="tactic">
     <thead>
         <tr>
             <th>ID</th>
@@ -145,7 +167,7 @@
             <th>Modified</th>
         </tr>
     </thead>
-    <tbody>
+    <tbody id="tbody">
         {% for t in tactics %}
         <tr>
             <td><a href="/enterprise/tactics/{{ t['tactic'] }}">{{ t['tactic'] }}</a></td>
@@ -181,4 +203,5 @@
 </table>
 
 {% endif %}
+</div>
 {% endblock %}
