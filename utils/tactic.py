@@ -26,6 +26,7 @@ def get_all_tactics():
             'tactic' : data['external_references'][0]['external_id'],
             'name' : data['name'],
             'modified' : data['modified'],
+            'description' : data['description']
             }
         )
     print(tactics_list)

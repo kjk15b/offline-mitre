@@ -50,12 +50,17 @@ def get_all_analytics():
     for analytic in analytics:
         f = open(os.path.join('static/car/',analytic), 'r')
         data = json.load(f)
+        implementations = []
+        if 'implementations' in data.keys():
+            implementations = data['implementations']
         analytic_list.append(
             {
                 'id' : data['id'],
                 'title' : data['title'],
                 'analytic_types' : data['analytic_types'],
-                'submission_date' : data['submission_date']
+                'submission_date' : data['submission_date'],
+                'description' : data['description'],
+                'implementations' : implementations
             }
         )
     print(analytic_list)

@@ -42,7 +42,8 @@ def get_all_data_components():
                 'type' : data['type'],
                 'created' : data['created'],
                 'modified' : data['modified'],
-                'ref' : data['name'].replace(' ', '_')
+                'ref' : data['name'].replace(' ', '_'),
+                'description' : data['description']
             }
         )
     print(dc_list)

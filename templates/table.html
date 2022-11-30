@@ -18,10 +18,10 @@
     </script>
 </head>
 <div class="page">
-<p>Search and filter results below:</p>  
+{% if type == 'technique' %}
+<p>Search and filter techniques below:</p>  
 <input id="search_mitre" type="text" placeholder="powershell">
 <br><br>
-{% if type == 'technique' %}
 <table class="technique">
     <thead>
         <tr>
@@ -45,6 +45,9 @@
 </table>
 
 {% elif type == 'datasource' %}
+<p>Search and filter datasources below:</p>  
+<input id="search_mitre" type="text" placeholder="active directory">
+<br><br>
 <table class="datasource">
     <thead>
         <tr>
@@ -61,12 +64,16 @@
             <td>{{ ds['name'] }}</td>
             <td>{{ ds['modified'] }}</td>
             <td>{{ ds['type'] }}</td>
+            <td hidden="hidden"> {{ ds['description'] }}</td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
 
 {% elif type == 'group' %}
+<p>Search and filter groups below:</p>  
+<input id="search_mitre" type="text" placeholder="apt28">
+<br><br>
 <table class="groups">
     <thead>
         <tr>
@@ -89,6 +96,9 @@
 </table>
 
 {% elif type == 'software' %}
+<p>Search and filter software below:</p>  
+<input id="search_mitre" type="text" placeholder="mimikatz">
+<br><br>
 <table class="software">
     <thead>
         <tr>
@@ -105,12 +115,16 @@
             <td>{{ sw['name'] }}</td>
             <td>{{ sw['labels'] }}</td>
             <td>{{ sw['modified'] }}</td>
+            <td hidden="hidden"> {{ sw['description'] }}</td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
 
 {% elif type == 'datacomponent' %}
+<p>Search and filter data-components below:</p>  
+<input id="search_mitre" type="text" placeholder="signatures">
+<br><br>
 <table class="datacomponent">
     <thead>
         <tr>
@@ -125,12 +139,16 @@
             <td><a href="/enterprise/data-component/{{ dc['ref'] }}">{{ dc['name'] }}</a></td>
             <td>{{ dc['created'] }}</td>
             <td>{{ dc['modified'] }}</td>
+            <td hidden="hidden"> {{ dc['description'] }}</td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
 
 {% elif type == 'car-analytic' %}
+<p>Search and filter CAR analytics below:</p>  
+<input id="search_mitre" type="text" placeholder="eql">
+<br><br>
 <table class="car">
     <thead>
         <tr>
@@ -153,6 +171,8 @@
                 </ul>
             </td>
             <td>{{ a['submission_date'] }}</td>
+            <td hidden="hidden"> {{ a['description'] }}</td>
+            <td hidden="hidden"> {{ a['implementations'] }}</td>
         </tr>
         {% endfor %}
     </tbody>
@@ -160,6 +180,9 @@
 
 {% elif type == 'tactic' %}
 <table class="tactic">
+<p>Search and filter tactics below:</p>  
+<input id="search_mitre" type="text" placeholder="destroy">
+<br><br>
     <thead>
         <tr>
             <th>ID</th>

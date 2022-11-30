@@ -41,7 +41,7 @@ def get_all_groups():
                 'group' : gid,
                 'name' : data['name'],
                 'aliases' : aliases,
-                'modified' : data['modified']
+                'modified' : data['modified'],
             }
         )
     print(group_list)

@@ -31,7 +31,8 @@ def get_all_datasources():
                 'datasource' : ds_id,
                 'name' : data['name'],
                 'type' : data['type'],
-                'modified' : data['modified']
+                'modified' : data['modified'],
+                'description' : data['description']
             }
         )
     print(ds_list)
